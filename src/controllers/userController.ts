@@ -104,6 +104,7 @@ export const getUser = async (req: Request, res: Response) => {
 export const createUser = async (req: Request, res: Response) => {
   const {
     employeeName,
+    email,
     profile,
     jobTitle,
     jobRole,
@@ -149,6 +150,7 @@ export const createUser = async (req: Request, res: Response) => {
 
     const user = new Users();
     user.employeeName = employeeName;
+    user.email = email;
     user.profile = profile;
     user.jobTitle = jobTitleEntity;
     user.jobRole = jobRoleEntity;
@@ -217,6 +219,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
     const {
       employeeName,
+      email,
       profile,
       jobTitle,
       jobRole,
@@ -267,6 +270,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
     // Update user fields with entity IDs
     user.employeeName = employeeName;
+    user.email = email;
     user.profile = profile;
     user.jobTitle = jobTitleEntity;
     user.jobRole = jobRoleEntity;
