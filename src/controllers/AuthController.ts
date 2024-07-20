@@ -8,30 +8,32 @@ export const authHandler = (dataSource: DataSource) => {
   const authService = new AuthService(dataSource);
 
   return async (req: Request, res: Response) => {
-    const { email, password } = req.body;
+    const { employeeId, password } = req.body;
 
-    if (!email || !password) {
+    if (!employeeId || !password) {
       return res
         .status(400)
-        .json({ message: "Email and password are required" });
+        .json({ message: "EmployeeId and password are required" });
     }
 
     try {
-      const isAuthenticated = await authService.login(email, password);
+      const isAuthenticated = await authService.login(employeeId, password);
       if (isAuthenticated) {
         const userRepository = AppDataSource.getRepository(Users);
         const user = await userRepository.findOne({
-          where: { email: email },
+          where: { employeeId: employeeId },
           relations: ["jobRole"],
         });
         return res.json({
-          id: user?.email,
+          id: user?.employeeId,
           name: user?.employeeName,
           role: user?.jobRole.Role,
           image: user?.profile || "",
         });
       } else {
-        return res.status(401).json({ message: "Invalid email or password" });
+        return res
+          .status(401)
+          .json({ message: "Invalid employeeId or password" });
       }
     } catch (err: any) {
       return res.status(500).json({ message: err.message });

@@ -2,6 +2,7 @@ interface Employee {
   id: string;
   email: string;
   employeeName: string;
+  employeeId: string;
   profile: string;
   jobTitle: string;
   jobRole: string;

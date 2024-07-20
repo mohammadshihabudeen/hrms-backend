@@ -13,7 +13,9 @@ export class AuthService {
 
   async register(user: Users, password: string): Promise<Auth> {
     // Check if user is already registered in Auth table
-    const existingAuth = await this.authRepository.findByEmail(user.email);
+    const existingAuth = await this.authRepository.findByEmployeeId(
+      user.employeeId
+    );
     if (existingAuth) {
       throw new Error("User already registered");
     }
@@ -25,13 +27,13 @@ export class AuthService {
     return await this.authRepository.save(auth);
   }
 
-  async login(email: string, password: string): Promise<boolean> {
-    const auth = await this.authRepository.findByEmail(email);
+  async login(employeeId: string, password: string): Promise<boolean> {
+    const auth = await this.authRepository.findByEmployeeId(employeeId);
     if (!auth) return false;
     return await bcrypt.compare(password, auth.password);
   }
 
-  async findByEmail(email: string): Promise<Auth | null> {
-    return await this.authRepository.findByEmail(email);
+  async findByEmployeeId(employeeId: string): Promise<Auth | null> {
+    return await this.authRepository.findByEmployeeId(employeeId);
   }
 }

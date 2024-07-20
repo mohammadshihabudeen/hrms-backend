@@ -20,6 +20,9 @@ export class Users {
   @Column()
   employeeName: string;
 
+  @Column({ unique: true })
+  employeeId: string;
+
   @Column()
   profile: string;
 

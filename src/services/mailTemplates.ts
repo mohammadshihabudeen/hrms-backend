@@ -1,5 +1,13 @@
-const WelcomeEmailTemplate = ({ employeeName, password }: { employeeName: string; password: string }) => {
-    return `
+const WelcomeEmailTemplate = ({
+  employeeName,
+  password,
+  employeeId,
+}: {
+  employeeName: string;
+  password: string;
+  employeeId: string;
+}) => {
+  return `
       <!DOCTYPE html>
       <html lang="en">
       <head>
@@ -56,6 +64,7 @@ const WelcomeEmailTemplate = ({ employeeName, password }: { employeeName: string
               <div class="content">
                   <h2>Hello ${employeeName},</h2>
                   <p>Thank you for registering with us! Your account has been successfully created.</p>
+                  <p>Your employee id is: <strong>${employeeId}</strong></p>
                   <p>Your temporary password is: <strong>${password}</strong></p>
                   <p>You can now log in and start using our services.</p>
                   <a href="" class="button">Log In</a>
