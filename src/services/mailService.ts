@@ -25,7 +25,7 @@ export const sendEmail = async (
 };
 
 export const sendRegistrationEmail = async (
-  email: string,
+  emails: string[],
   employeeName: string,
   password: string,
   employeeId: string
@@ -36,5 +36,7 @@ export const sendRegistrationEmail = async (
     password,
     employeeId,
   });
-  await sendEmail(email, subject, htmlContent);
+  for (const email of emails) {
+    await sendEmail(email, subject, htmlContent);
+  }
 };

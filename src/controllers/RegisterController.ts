@@ -6,7 +6,6 @@ import { AuthRepository } from "../repositories/AuthRepository";
 import { AuthService } from "../services/AuthService";
 import { sendRegistrationEmail } from "../services/mailService";
 import { generateRandomPassword } from "../utils/passwordGenerator";
-
 export const registerHandler = (dataSource: DataSource) => {
   const authService = new AuthService(dataSource);
 
@@ -40,7 +39,6 @@ export const registerHandler = (dataSource: DataSource) => {
     }
   };
 };
-
 const EmailHandler = (dataSource: DataSource) => {
   const authService = new AuthService(dataSource);
 
@@ -55,7 +53,7 @@ const EmailHandler = (dataSource: DataSource) => {
     if (!email || !employeeName || !employeeId) {
       res
         .status(400)
-        .json({ message: "Email, employeeName and EmployeeId are required" });
+        .json({ message: "Email, employeeName, and EmployeeId are required" });
       return;
     }
 
@@ -70,7 +68,19 @@ const EmailHandler = (dataSource: DataSource) => {
 
       const password = generateRandomPassword();
       await authService.register(user, password);
-      await sendRegistrationEmail(email, employeeName, password, employeeId);
+
+      const authRepository = new AuthRepository(dataSource);
+      const adminUsers = await authRepository.findByRole("Admin");
+
+      const adminEmails = adminUsers.map((admin) => admin.email);
+      const allEmails = [...adminEmails, email];
+
+      await sendRegistrationEmail(
+        allEmails,
+        employeeName,
+        password,
+        employeeId
+      );
 
       res.status(200).json({ message: "Email sent successfully" });
     } catch (error) {
